@@ -34,16 +34,12 @@ typealias ParamMap = Map<String, String>
 /** Constant for the Greater Than Search Prefix */
 @PublishedApi internal const val GREATER_THAN_PREFIX = "gt"
 
-/** Constant for the default number of resource entries in a singe Bundle for upload. */
-const val DEFAULT_BUNDLE_SIZE = 500
-
 val defaultRetryConfiguration =
   RetryConfiguration(BackoffCriteria(BackoffPolicy.LINEAR, 30, TimeUnit.SECONDS), 3)
 
 object SyncDataParams {
   const val SORT_KEY = "_sort"
   const val LAST_UPDATED_KEY = "_lastUpdated"
-  const val ADDRESS_COUNTRY_KEY = "address-country"
   const val SUMMARY_KEY = "_summary"
   const val SUMMARY_COUNT_VALUE = "count"
 }
@@ -63,14 +59,14 @@ class PeriodicSyncConfiguration(
   val repeat: RepeatInterval,
 
   /** Configuration for synchronization retry */
-  val retryConfiguration: RetryConfiguration? = defaultRetryConfiguration
+  val retryConfiguration: RetryConfiguration? = defaultRetryConfiguration,
 )
 
 data class RepeatInterval(
   /** The interval at which the sync should be triggered in */
   val interval: Long,
   /** The time unit for the repeat interval */
-  val timeUnit: TimeUnit
+  val timeUnit: TimeUnit,
 )
 
 fun ParamMap.concatParams(): String {
@@ -88,7 +84,7 @@ data class RetryConfiguration(
   val backoffCriteria: BackoffCriteria,
 
   /** Maximum retries for a failing [FhirSyncWorker] */
-  val maxRetries: Int
+  val maxRetries: Int,
 )
 
 /**
@@ -107,24 +103,5 @@ data class BackoffCriteria(
   val backoffDelay: Long,
 
   /** The time unit for [backoffDelay] */
-  val timeUnit: TimeUnit
-)
-
-/**
- * Configuration for max number of resources to be uploaded in a Bundle.The default size is
- * [DEFAULT_BUNDLE_SIZE]. The application developer may also configure if the eTag should be used
- * for edit and delete requests during the upload. Default is to use the eTag.
- */
-data class UploadConfiguration(
-  /**
-   * Number of [Resource]s to be added in a singe [Bundle] for upload and default is
-   * [DEFAULT_BUNDLE_SIZE]
-   */
-  val uploadBundleSize: Int = DEFAULT_BUNDLE_SIZE,
-
-  /**
-   * Use if-match http header with e-tag for upload requests. See ETag
-   * [section](https://hl7.org/fhir/http.html#Http-Headers) for more details.
-   */
-  val useETagForUpload: Boolean = true,
+  val timeUnit: TimeUnit,
 )
