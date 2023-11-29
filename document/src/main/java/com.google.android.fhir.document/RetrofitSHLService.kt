@@ -54,6 +54,7 @@ interface RetrofitSHLService {
     @Header("Authorization") authorization: String,
   ): Response<ResponseBody>
 
+  /* POST request to the SHL's manifest url to get the list of files associated with the link */
   @POST
   @Headers("Content-Type: application/smart-health-card")
   suspend fun getFilesFromManifest(
@@ -61,6 +62,7 @@ interface RetrofitSHLService {
     @Body jsonData: String,
   ): Response<ResponseBody>
 
+  /* GET request if files are stored in an external "location" */
   @GET
   suspend fun getFromLocation(
     @Url path: String,
