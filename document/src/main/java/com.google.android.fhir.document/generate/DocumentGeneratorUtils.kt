@@ -41,16 +41,14 @@ import org.hl7.fhir.r4.model.ResourceType
 
 object DocumentGeneratorUtils {
 
-  private val addedResourcesByType: MutableMap<String, MutableList<Resource>> = mutableMapOf()
-
   /* Create a section in the IPS composition for a given resource */
   private fun createResourceSection(resource: Resource): SectionComponent {
     val section = SectionComponent()
+    val resourceType = resource.resourceType.toString()
+    val addedResourcesByType: MutableMap<String, MutableList<Resource>> = mutableMapOf()
 
     section.title = getResourceTitle(resource)
     section.code = getResourceCode(resource)
-
-    val resourceType = resource.resourceType.toString()
     addedResourcesByType.getOrPut(resourceType) { mutableListOf() }.add(resource)
 
     section.entry.clear()
@@ -70,6 +68,7 @@ object DocumentGeneratorUtils {
     return section
   }
 
+  /* Creates an Organization object from a given Organization reference */
   fun createOrganizationFromReference(reference: Reference): Organization {
     val organization = Organization()
     organization.id = reference.reference
@@ -77,6 +76,7 @@ object DocumentGeneratorUtils {
     return organization
   }
 
+  /* Creates a subtitle to display the title of a section on the selection screen */
   fun createHeadingView(
     context: Context,
     titleName: String,
@@ -90,6 +90,7 @@ object DocumentGeneratorUtils {
     return headingView
   }
 
+  /* Create a clickable checkbox */
   fun createCheckBox(context: Context, text: String, containerLayout: LinearLayout): CheckBox {
     val layoutInflater = LayoutInflater.from(context)
     val checkBoxItem =
@@ -98,6 +99,7 @@ object DocumentGeneratorUtils {
     return checkBoxItem
   }
 
+  /* Creates a unique Coding for each provided resource */
   private fun createCoding(
     code: String,
     display: String,
@@ -178,6 +180,7 @@ object DocumentGeneratorUtils {
     return Pair(missingSections, missingResources)
   }
 
+  /* Adds an empty section to the IPS if a required section is missing */
   private fun createMissingResource(sectionTitle: String): Resource {
     val missingResource: Resource =
       when (sectionTitle) {

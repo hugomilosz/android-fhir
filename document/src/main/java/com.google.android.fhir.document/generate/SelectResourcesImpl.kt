@@ -20,33 +20,16 @@ import android.content.Context
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import ca.uhn.fhir.context.FhirContext
-import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.R
 import com.google.android.fhir.document.Title
 import org.hl7.fhir.r4.model.Observation
 import org.hl7.fhir.r4.model.Resource
 
-class SelectResourcesImpl(private val docGenUtils: DocumentGeneratorUtils, private val docUtils: DocumentUtils) : SelectResources {
-  private val parser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
-
-  override fun getDataFromDoc(doc: IPSDocument): List<Title> {
-    for (title in doc.titles) {
-      val filteredResources =
-        doc.document.entry
-          .map { it.resource }
-          .filter { resource ->
-            val resourceType = resource.resourceType.toString()
-            docUtils.getSearchingCondition(title.name, resourceType)
-          }
-      val resourceList =
-        filteredResources.filterNot { docUtils.shouldExcludeResource(title.name, it) }
-      val existingTitle = doc.titles.find { it.name == title.name }
-      existingTitle?.dataEntries?.addAll(resourceList)
-    }
-    return doc.titles
-  }
+class SelectResourcesImpl(
+  private val docGenUtils: DocumentGeneratorUtils,
+  private val docUtils: DocumentUtils,
+) : SelectResources {
 
   override fun generateIPS(selectedResources: List<Resource>): IPSDocument {
     val composition = docGenUtils.createIPSComposition()
@@ -63,20 +46,6 @@ class SelectResourcesImpl(private val docGenUtils: DocumentGeneratorUtils, priva
     val bundle =
       docGenUtils.addResourcesToDoc(composition, selectedResources + referenced, missingResources)
     return IPSDocument.create(bundle)
-  }
-
-  private fun findReferences(resource: Resource): List<Resource> {
-    val organizationReferences = mutableListOf<Resource>()
-    if (resource is Observation) {
-      val performerReferences = resource.performer
-      performerReferences.forEach { performerReference ->
-        if (performerReference.reference.isNotBlank()) {
-          val organization = docGenUtils.createOrganizationFromReference(performerReference)
-          organizationReferences.add(organization)
-        }
-      }
-    }
-    return organizationReferences
   }
 
   override fun displayOptions(
@@ -108,5 +77,37 @@ class SelectResourcesImpl(private val docGenUtils: DocumentGeneratorUtils, priva
         }
         title
       }
+  }
+
+  /* Returns a map of all the sections in the document to the list of resources listed under that section */
+  private fun getDataFromDoc(doc: IPSDocument): List<Title> {
+    for (title in doc.titles) {
+      val filteredResources =
+        doc.document.entry
+          .map { it.resource }
+          .filter { resource ->
+            val resourceType = resource.resourceType.toString()
+            docUtils.getSearchingCondition(title.name, resourceType)
+          }
+      val resourceList =
+        filteredResources.filterNot { docUtils.shouldExcludeResource(title.name, it) }
+      val existingTitle = doc.titles.find { it.name == title.name }
+      existingTitle?.dataEntries?.addAll(resourceList)
+    }
+    return doc.titles
+  }
+
+  private fun findReferences(resource: Resource): List<Resource> {
+    val organizationReferences = mutableListOf<Resource>()
+    if (resource is Observation) {
+      val performerReferences = resource.performer
+      performerReferences.forEach { performerReference ->
+        if (performerReference.reference.isNotBlank()) {
+          val organization = docGenUtils.createOrganizationFromReference(performerReference)
+          organizationReferences.add(organization)
+        }
+      }
+    }
+    return organizationReferences
   }
 }
