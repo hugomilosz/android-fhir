@@ -28,17 +28,13 @@ import com.google.android.fhir.document.Title
 import org.hl7.fhir.r4.model.Observation
 import org.hl7.fhir.r4.model.Resource
 
-class SelectResourcesImpl : SelectResources {
-  private val docGenUtils = DocumentGeneratorUtils
-  private val docUtils = DocumentUtils
+class SelectResourcesImpl(private val docGenUtils: DocumentGeneratorUtils, private val docUtils: DocumentUtils) : SelectResources {
   private val parser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
 
   override fun getDataFromDoc(doc: IPSDocument): List<Title> {
-    val bundle = doc.document
-
     for (title in doc.titles) {
       val filteredResources =
-        bundle.entry
+        doc.document.entry
           .map { it.resource }
           .filter { resource ->
             val resourceType = resource.resourceType.toString()
@@ -66,7 +62,6 @@ class SelectResourcesImpl : SelectResources {
     composition.section = sections
     val bundle =
       docGenUtils.addResourcesToDoc(composition, selectedResources + referenced, missingResources)
-    println(parser.encodeResourceToString(bundle))
     return IPSDocument.create(bundle)
   }
 
