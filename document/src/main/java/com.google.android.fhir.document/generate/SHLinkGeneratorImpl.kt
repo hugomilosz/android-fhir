@@ -26,7 +26,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import timber.log.Timber
 
-internal class SHLinkGeneratorImpl(
+class SHLinkGeneratorImpl(
   private val apiService: RetrofitSHLService,
   private val encryptionUtility: EncryptionUtils,
 ) : SHLinkGenerator {

@@ -17,6 +17,7 @@
 package com.google.android.fhir.document.generate
 
 import com.google.android.fhir.document.IPSDocument
+import java.io.Serializable
 import java.time.Instant
 
 /**
@@ -34,4 +35,4 @@ data class SHLinkGenerationData(
   val label: String,
   val expirationTime: Instant?,
   val ipsDoc: IPSDocument,
-)
+) : Serializable

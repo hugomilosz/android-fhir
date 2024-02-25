@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewSHL">
+
+  <TextView android:id="@+id/textView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="@string/the_shl_will_go_here" />
+
+  <TextView android:id="@+id/passcode"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_below="@id/textView"
+      android:text="" />
+
+  <TextView android:id="@+id/expirationDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_below="@id/passcode"
+      android:text="" />
+
+  <ImageView android:id="@+id/qrCode"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_below="@id/expirationDate"
+      android:text="" />
+
+</RelativeLayout>

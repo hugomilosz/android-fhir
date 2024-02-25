@@ -55,6 +55,8 @@ include(":document")
 
 include(":demo")
 
+include(":demoIPS")
+
 include(":engine")
 
 include(":knowledge")
