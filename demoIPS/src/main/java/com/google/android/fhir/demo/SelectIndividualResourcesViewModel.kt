@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.android.fhir.demoIPS
 
 import android.content.Context
@@ -31,28 +47,38 @@ class SelectIndividualResourcesViewModel : ViewModel() {
     val ipsDoc = IPSDocument.create(parser.parseResource(doc) as Bundle)
     selectedTitles = documentGenerator.displayOptions(context, ipsDoc, checkBoxes, checkboxTitleMap)
     patient =
-      ipsDoc.document.entry.firstOrNull { it.resource.resourceType == ResourceType.Patient }?.resource
+      ipsDoc.document.entry
+        .firstOrNull { it.resource.resourceType == ResourceType.Patient }
+        ?.resource
         ?: Patient()
   }
 
   /* Filter through the selected checkboxes and generate an IPS document
-     using the patient-selected resources */
+  using the patient-selected resources */
   fun generateIPSDocument(): IPSDocument {
-    val selectedValues = checkBoxes.filter { it.isChecked }.map { checkBox ->
-      val text = checkBox.text.toString()
-      val name = checkboxTitleMap[text] ?: ""
-      Pair(Title(name, arrayListOf()), text)
-    }
+    val selectedValues =
+      checkBoxes
+        .filter { it.isChecked }
+        .map { checkBox ->
+          val text = checkBox.text.toString()
+          val name = checkboxTitleMap[text] ?: ""
+          Pair(Title(name, arrayListOf()), text)
+        }
 
-    val outputArray = selectedValues.flatMap { (title, value) ->
-      title.let { selectedTitle ->
-        selectedTitles.find { it.name == selectedTitle.name }?.dataEntries?.filter { obj ->
-          obj.hasCode().first?.coding?.firstOrNull { it.hasDisplay() && it.display == value } != null
-        } ?: emptyList()
-      }
-    } + patient
+    val outputArray =
+      selectedValues.flatMap { (title, value) ->
+        title.let { selectedTitle ->
+          selectedTitles
+            .find { it.name == selectedTitle.name }
+            ?.dataEntries
+            ?.filter { obj ->
+              obj.hasCode().first?.coding?.firstOrNull { it.hasDisplay() && it.display == value } !=
+                null
+            }
+            ?: emptyList()
+        }
+      } + patient
 
     return documentGenerator.generateIPS(outputArray)
   }
-
 }

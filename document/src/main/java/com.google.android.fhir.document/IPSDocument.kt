@@ -39,18 +39,19 @@ import org.hl7.fhir.r4.model.ResourceType
 data class IPSDocument(
   val document: Bundle,
   val titles: ArrayList<Title>,
-): Serializable {
+) : Serializable {
 
   companion object {
     fun create(bundle: Bundle): IPSDocument {
       val composition =
         bundle.entry?.firstOrNull { it.resource.resourceType == ResourceType.Composition }?.resource
           as Composition
-      val titles = composition.section.map {
-        val titleText = it.title ?: "Default Title"
-        Log.d("TITLES", titleText)
-        Title(titleText, ArrayList())
-      } as ArrayList<Title>
+      val titles =
+        composition.section.map {
+          val titleText = it.title ?: "Default Title"
+          Log.d("TITLES", titleText)
+          Title(titleText, ArrayList())
+        } as ArrayList<Title>
       return IPSDocument(bundle, titles)
     }
   }
@@ -68,4 +69,4 @@ data class IPSDocument(
 data class Title(
   val name: String,
   val dataEntries: ArrayList<Resource>,
-): Serializable
+) : Serializable

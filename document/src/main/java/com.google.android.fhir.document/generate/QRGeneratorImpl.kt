@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2023-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.google.android.fhir.document.generate
 import android.graphics.Bitmap
 import android.widget.ImageView
 
-internal class QRGeneratorImpl(private val qrGeneratorUtils: QRGeneratorUtils) : QRGenerator {
+class QRGeneratorImpl(private val qrGeneratorUtils: QRGeneratorUtils) : QRGenerator {
 
   /* Generate and display the SHL QR code */
   override fun generateAndSetQRCode(shLink: String, qrView: ImageView) {

@@ -52,11 +52,12 @@ class SHLinkGeneratorImpl(
   /* Send a POST request to the SHL server to get a new manifest URL.
   Can optionally add a passcode to the SHL here */
   private suspend fun getManifestUrlAndToken(passcode: String): JSONObject {
-    val requestBody = if (passcode.isNotBlank()) {
-      "{\"passcode\": \"$passcode\"}".toRequestBody(null)
-    } else {
-      "{}".toRequestBody(null)
-    }
+    val requestBody =
+      if (passcode.isNotBlank()) {
+        "{\"passcode\": \"$passcode\"}".toRequestBody(null)
+      } else {
+        "{}".toRequestBody(null)
+      }
     val response = apiService.getManifestUrlAndToken(requestBody)
 
     return if (response.isSuccessful) {

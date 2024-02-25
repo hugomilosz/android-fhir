@@ -1,53 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreatePasscode">
+    tools:context=".CreatePasscode"
+>
 
-  <TextView android:id="@+id/textView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:text="optionally_add_a_passcode_a_label_or_an_expiration_date" />
-
-  <EditText
-      android:id="@+id/passcode"
-      android:inputType="text"
-      android:layout_width="fill_parent"
-      android:layout_height="50dp"
-      android:layout_below="@+id/textView"
-      android:hint="Enter Passcode" />
+  <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="optionally_add_a_passcode_a_label_or_an_expiration_date"
+    />
 
   <EditText
-      android:id="@+id/label"
-      android:inputType="text"
-      android:layout_width="fill_parent"
-      android:layout_height="50dp"
-      android:layout_below="@+id/passcode"
-      android:maxLength="80"
-      android:hint="enter_an_optional_label" />
+        android:id="@+id/passcode"
+        android:inputType="text"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textView"
+        android:hint="Enter Passcode"
+    />
 
-  <CheckBox android:id="@+id/checkboxDate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/label"
-      android:text="do_you_want_to_include_an_expiration_date" />
+  <EditText
+        android:id="@+id/label"
+        android:inputType="text"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/passcode"
+        android:maxLength="80"
+        android:hint="enter_an_optional_label"
+    />
+
+  <CheckBox
+        android:id="@+id/checkboxDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label"
+        android:text="do_you_want_to_include_an_expiration_date"
+    />
 
   <DatePicker
-      android:id="@+id/datePicker"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:datePickerMode="spinner"
-      android:layout_below="@+id/checkboxDate"
-      android:calendarViewShown="false"/>
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:layout_below="@+id/checkboxDate"
+        android:calendarViewShown="false"
+    />
 
   <Button
-      android:id="@+id/generateSHL"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:layout_below="@+id/datePicker"
-      android:text="String" />
+        android:id="@+id/generateSHL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/datePicker"
+        android:text="String"
+    />
 
 </RelativeLayout>
