@@ -31,6 +31,12 @@ class SelectResourcesImpl(
   private val docUtils: DocumentUtils,
 ) : SelectResources {
 
+  /**
+   * Generates a new IPS document given a list of patient-selected resources.
+   *
+   * @param selectedResources List of selected FHIR resources.
+   * @return IPSDocument representing the generated document.
+   */
   override fun generateIPS(selectedResources: List<Resource>): IPSDocument {
     val composition = docGenUtils.createIPSComposition()
     val sections = docGenUtils.createIPSSections(selectedResources)
@@ -48,6 +54,15 @@ class SelectResourcesImpl(
     return IPSDocument.create(bundle)
   }
 
+  /**
+   * Renders an IPS document for an Android device, providing options for selected resources.
+   *
+   * @param context The Android application context.
+   * @param bundle IPSDocument to be displayed.
+   * @param checkboxes List of CheckBox widgets to be displayed.
+   * @param checkboxTitleMap Mapping of CheckBox titles to resource identifiers.
+   * @return List of Title objects representing the displayed options.
+   */
   override fun displayOptions(
     context: Context,
     bundle: IPSDocument,
