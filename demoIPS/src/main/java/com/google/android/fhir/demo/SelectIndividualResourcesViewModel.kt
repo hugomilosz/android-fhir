@@ -1,7 +1,6 @@
 package com.google.android.fhir.demoIPS
 
 import android.content.Context
-import android.util.Log
 import android.widget.CheckBox
 import androidx.lifecycle.ViewModel
 import ca.uhn.fhir.context.FhirContext
@@ -13,7 +12,9 @@ import com.google.android.fhir.document.generate.DocumentUtils
 import com.google.android.fhir.document.generate.SelectResourcesImpl
 import com.google.android.fhir.document.generate.hasCode
 import org.hl7.fhir.r4.model.Bundle
+import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
+import org.hl7.fhir.r4.model.ResourceType
 
 class SelectIndividualResourcesViewModel : ViewModel() {
   private var selectedTitles = listOf<Title>()
@@ -28,11 +29,10 @@ class SelectIndividualResourcesViewModel : ViewModel() {
     val docUtils = DocumentUtils
     val doc = docUtils.readFileFromAssets(context, "immunizationBundle.json")
     val ipsDoc = IPSDocument.create(parser.parseResource(doc) as Bundle)
-    Log.d("SJDJASHDJK", ipsDoc.titles.toString())
     selectedTitles = documentGenerator.displayOptions(context, ipsDoc, checkBoxes, checkboxTitleMap)
-    // patient =
-    //   ipsDoc.document.entry.firstOrNull { it.resource.resourceType == ResourceType.Patient }?.resource
-    //     ?: Patient()
+    patient =
+      ipsDoc.document.entry.firstOrNull { it.resource.resourceType == ResourceType.Patient }?.resource
+        ?: Patient()
   }
 
   /* Filter through the selected checkboxes and generate an IPS document
