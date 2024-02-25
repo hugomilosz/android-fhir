@@ -7,7 +7,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.fhir.NetworkConfiguration
-import com.google.android.fhir.demoIPS.R
 import com.google.android.fhir.document.RetrofitSHLService
 import com.google.android.fhir.document.generate.EncryptionUtils
 import com.google.android.fhir.document.generate.SHLinkGenerationData
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class GenerateSHL : AppCompatActivity() {
 
-  private val linkGenerator = SHLinkGeneratorImpl(RetrofitSHLService.Builder("", NetworkConfiguration()).build(), EncryptionUtils)
+  private val linkGenerator = SHLinkGeneratorImpl(RetrofitSHLService.Builder("https://api.vaxx.link/", NetworkConfiguration()).build(), EncryptionUtils)
 
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +32,7 @@ class GenerateSHL : AppCompatActivity() {
 
     if (shlData?.ipsDoc?.document != null) {
       lifecycleScope.launch {
-        linkGenerator.generateSHLink(
+        val s = linkGenerator.generateSHLink(
           shlData, passcode, "", ""
         )
       }

@@ -38,10 +38,11 @@ import retrofit2.http.Url
 interface RetrofitSHLService {
 
   /* Initial POST request to generate a manifest URL */
-  @POST
-  @Headers("Content-Type: application/json")
+  @POST("api/shl")
+  // @Headers("Content-Type: text/plain;charset=UTF-8")
+  // @Headers("Content-Type: application/json")
   suspend fun getManifestUrlAndToken(
-    @Url path: String,
+    // @Url path: String,
     @Body request: RequestBody,
   ): Response<ResponseBody>
 

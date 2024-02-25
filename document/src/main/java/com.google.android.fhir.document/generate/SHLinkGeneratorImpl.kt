@@ -21,7 +21,6 @@ import android.util.Base64
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.document.RetrofitSHLService
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import timber.log.Timber
@@ -53,15 +52,16 @@ class SHLinkGeneratorImpl(
   /* Send a POST request to the SHL server to get a new manifest URL.
   Can optionally add a passcode to the SHL here */
   private suspend fun getManifestUrlAndToken(passcode: String): JSONObject {
-    val requestBody =
-      if (passcode.isNotBlank()) {
-        "{\"passcode\": \"$passcode\"}".toRequestBody("application/json".toMediaTypeOrNull())
-      } else {
-        "{}".toRequestBody("application/json".toMediaTypeOrNull())
-      }
-    val response = apiService.getManifestUrlAndToken("", requestBody)
+    val requestBody = if (passcode.isNotBlank()) {
+      "{\"passcode\": \"$passcode\"}".toRequestBody(null)
+    } else {
+      "{}".toRequestBody(null)
+    }
+    val response = apiService.getManifestUrlAndToken(requestBody)
+
     return if (response.isSuccessful) {
       val responseBody = response.body()?.string()
+
       println("MANIFEST RESPONSE: $responseBody")
       if (!responseBody.isNullOrBlank()) {
         JSONObject(responseBody)
