@@ -17,7 +17,9 @@
 package com.google.android.fhir.document
 
 import org.hl7.fhir.r4.model.Bundle
+import org.hl7.fhir.r4.model.Composition
 import org.hl7.fhir.r4.model.Resource
+import org.hl7.fhir.r4.model.ResourceType
 
 /**
  * Represents an International Patient Summary (IPS) document, associating it with a specific
@@ -36,11 +38,14 @@ data class IPSDocument(
   val document: Bundle,
   val titles: ArrayList<Title>,
 ) {
-  constructor(bundle: Bundle) : this(bundle, arrayListOf())
 
   companion object {
     fun create(bundle: Bundle): IPSDocument {
-      return IPSDocument(bundle)
+      val composition =
+        bundle.entry?.firstOrNull { it.resource.resourceType == ResourceType.Composition }?.resource
+          as Composition
+      val titles = composition.section.map { Title(it.title, ArrayList()) } as ArrayList<Title>
+      return IPSDocument(bundle, titles)
     }
   }
 }

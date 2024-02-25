@@ -1,4 +1,4 @@
-package com.google.android.fhir.ipsapp
+package com.google.android.fhir.demoIPS
 
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class GenerateSHL : AppCompatActivity() {
 
-  private val linkGenerator = SHLinkGeneratorImpl(RetrofitSHLService.builder("", NetworkConfiguration()).build(), EncryptionUtils)
+  private val linkGenerator = SHLinkGeneratorImpl(RetrofitSHLService.Builder("", NetworkConfiguration()).build(), EncryptionUtils)
 
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {

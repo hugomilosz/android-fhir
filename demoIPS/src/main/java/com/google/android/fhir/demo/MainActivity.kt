@@ -9,6 +9,8 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.fhir.demoIPS.R
+import com.google.android.fhir.demoIPS.SelectIndividualResources
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,8 +46,8 @@ class MainActivity : AppCompatActivity() {
 
   // when the button is pressed, go to the QR scanner activity
   private fun openScanner() {
-    val i = Intent(this@MainActivity, ScannerActivity::class.java)
-    startActivity(i)
+    // val i = Intent(this@MainActivity, ScannerActivity::class.java)
+    // startActivity(i)
   }
 
   // ask for permission to use the camera
