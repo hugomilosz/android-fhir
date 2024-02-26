@@ -63,6 +63,24 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.google.android.fhir.demoIPS.ScannerActivity"
+            android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.android.fhir.demoIPS.SuccessfulScan"
+            android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

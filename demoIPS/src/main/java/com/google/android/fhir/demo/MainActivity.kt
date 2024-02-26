@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
 
   // when the button is pressed, go to the QR scanner activity
   private fun openScanner() {
-    // val i = Intent(this@MainActivity, ScannerActivity::class.java)
-    // startActivity(i)
+    val i = Intent(this@MainActivity, ScannerActivity::class.java)
+    startActivity(i)
   }
 
   // ask for permission to use the camera

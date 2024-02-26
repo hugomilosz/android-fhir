@@ -33,8 +33,11 @@ android {
 }
 
 dependencies {
-  implementation(Dependencies.Androidx.coreKtx)
   implementation(Dependencies.Androidx.appCompat)
+  implementation(Dependencies.Androidx.camera)
+  implementation(Dependencies.Androidx.cameraLifecycle)
+  implementation(Dependencies.Androidx.coreKtx)
+  implementation(Dependencies.Mlkit.barcodeScanning)
   implementation(Dependencies.material)
   implementation(Dependencies.androidFhirEngine)
   implementation(Dependencies.Retrofit.coreRetrofit)
@@ -43,6 +46,9 @@ dependencies {
   implementation(Dependencies.zxing)
   implementation(Dependencies.nimbus)
   implementation(Dependencies.timber)
+  implementation(project(":contrib:barcode"))
+  implementation("com.google.android.gms:play-services-vision-common:19.1.3")
+  implementation("com.google.android.gms:play-services-vision:20.1.3")
 
   coreLibraryDesugaring(Dependencies.desugarJdkLibs)
 

@@ -26,11 +26,15 @@ import com.google.android.fhir.document.R
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import kotlin.math.max
 
 class QRGeneratorUtils(private val context: Context) {
 
   /* Creates a QR for a given string */
   fun createQRCodeBitmap(content: String): Bitmap {
+    if (content.isEmpty()) {
+      throw IllegalArgumentException("Content must not be empty")
+    }
     val hints = mutableMapOf<EncodeHintType, Any>()
     hints[EncodeHintType.MARGIN] = 2
     val qrCodeWriter = QRCodeWriter()
@@ -54,8 +58,8 @@ class QRGeneratorUtils(private val context: Context) {
     val logoAspectRatio =
       logoDrawable!!.intrinsicWidth.toFloat() / logoDrawable.intrinsicHeight.toFloat()
     val width = qrCodeBitmap.width
-    val logoWidth = (width * logoScale).toInt()
-    val logoHeight = (logoWidth / logoAspectRatio).toInt()
+    val logoWidth = max((width * logoScale).toInt(), 1)
+    val logoHeight = max((logoWidth / logoAspectRatio).toInt(), 1)
 
     return convertDrawableToBitmap(logoDrawable, logoWidth, logoHeight)
   }

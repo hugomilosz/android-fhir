@@ -9,7 +9,7 @@ configureRuler()
 
 android {
   namespace = "com.google.android.fhir.demoIPS"
-  compileSdk = Sdk.compileSdk
+  compileSdk = 34
   defaultConfig {
     applicationId = Releases.Demo.applicationId
     minSdk = Sdk.minSdk
