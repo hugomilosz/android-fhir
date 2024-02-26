@@ -18,9 +18,11 @@ package com.google.android.fhir.document.generate
 
 import android.content.ContentValues.TAG
 import android.util.Base64
+import android.util.Log
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.document.RetrofitSHLService
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import timber.log.Timber
@@ -85,20 +87,20 @@ class SHLinkGeneratorImpl(
     optionalViewer: String,
   ): String {
     val manifestToken = initialPostResponse.getString("id")
-    val manifestUrl = "$serverBaseUrl/api/shl/$manifestToken"
+    val manifestUrl = "api/shl/$manifestToken/file"
     val managementToken = initialPostResponse.getString("managementToken")
     val exp = shLinkGenerationData.expirationTime?.epochSecond?.toString() ?: ""
     val key = encryptionUtility.generateRandomKey()
     val shLinkPayload =
       constructSHLinkPayload(
-        manifestUrl,
+        "https://api.vaxx.link/api/shl/$manifestToken",
         shLinkGenerationData.label,
         getKeyFlags(passcode),
         key,
         exp,
       )
     val data: String = parser.encodeResourceToString(shLinkGenerationData.ipsDoc.document)
-    postPayload(data, manifestToken, key, managementToken)
+    postPayload(data, manifestUrl, key, managementToken)
     val encodedPayload = base64UrlEncode(shLinkPayload)
     return "${optionalViewer}shlink:/$encodedPayload"
   }
@@ -142,12 +144,17 @@ class SHLinkGeneratorImpl(
     managementToken: String,
   ) {
     try {
+      Log.d("DATA TO POST", file)
       val contentEncrypted = encryptionUtility.encrypt(file, key)
       val authorization = "Bearer $managementToken"
-      val response = apiService.postPayload(manifestToken, contentEncrypted, authorization)
+      Log.d("MANIFEST TOKEN", manifestToken)
+
+      val requestBody = contentEncrypted.toRequestBody("application/json".toMediaTypeOrNull())
+      val response = apiService.postPayload(manifestToken, requestBody, authorization)
       if (!response.isSuccessful) {
         Timber.e("HTTP Error: ${response.code()}")
       }
+      Log.d("RESPONSE", response.body().toString())
     } catch (e: Exception) {
       Timber.e(TAG, "Error while posting payload: ${e.message}", e)
       throw e

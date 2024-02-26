@@ -75,8 +75,7 @@ class SHLinkDecoderImplTest {
 
   private val getLocationResponse = "locationData"
   private val exampleSHL =
-    "shlink:/eyJsYWJlbCI6IkN1c3RvbSBEYXRhc2V0IDExIiwidXJsIjoiaHR0cHM6Ly9hcGkudmF4eC5saW5rL2FwaS9zaGwveFJ4M2Q0QzNROE0wbnhaejZmc1ZYdGYyLW5QTDlwUXdBb2RRZVVYNzFqYyIsImZsYWciOiIiLCJrZXkiOiI0RXNvSFF3WXdTLU8wVW43WkNBQXlSMnQ2TVJ3WjJpSndLMFlZTnBNcEZFIn0"
-  private val exampleJsonData = "{\"passcode\": \"\", \"recipient\": \"Example SHL Client\"}"
+    "shlink:/eyJsYWJlbCI6IkN1c3RvbSBEYXRhc2V0IDExIiwidXJsIjoiaHR0cHM6Ly9hcGkudmF4eC5saW5rL2FwaS9zaGwveFJ4M2Q0QzNROE0wbnhaejZmc1ZYdGYyLW5QTDlwUXdBb2RRZVVYNzFqYyIsImZsYWciOiIiLCJrZXkiOiI0RXNvSFF3WXdTLU8wVW43WkNBQXlSMnQ2TVJ3WjJpSndLM0hhY2hpbmcifQ=="
   private val filesWithEmbedded =
     "{\"files\": [{\"contentType\": \"application/smart-health-card\", \"embedded\": \"embeddedData\"}]}"
   private val filesWithLocation =
@@ -107,7 +106,8 @@ class SHLinkDecoderImplTest {
     val result =
       shLinkDecoderImpl.decodeSHLinkToDocument(
         exampleSHL,
-        exampleJsonData,
+        "",
+        "",
       )
     assertThat(result).isNotNull()
     assertThat(result!!.document).isNotNull()
@@ -127,7 +127,12 @@ class SHLinkDecoderImplTest {
       `when`(readSHLinkUtils.decodeShc(anyString(), anyString())).thenReturn(testBundleString)
       `when`(readSHLinkUtils.extractVerifiableCredential(testBundleString)).thenReturn("")
 
-      val result = shLinkDecoderImpl.decodeSHLinkToDocument(exampleSHL, exampleJsonData)
+      val result =
+        shLinkDecoderImpl.decodeSHLinkToDocument(
+          exampleSHL,
+          "",
+          "",
+        )
       assertThat(result).isNotNull()
       assertThat(result!!.document).isNotNull()
 
@@ -164,7 +169,11 @@ class SHLinkDecoderImplTest {
       `when`(readSHLinkUtils.extractVerifiableCredential(testBundleString)).thenReturn("")
 
       val result = runCatching {
-        shLinkDecoderImpl.decodeSHLinkToDocument(exampleSHL, exampleJsonData)
+        shLinkDecoderImpl.decodeSHLinkToDocument(
+          exampleSHL,
+          "",
+          "",
+        )
       }
       assertThat(result.isFailure).isTrue()
       assertThat(result.exceptionOrNull()!!::class).isEqualTo(Error::class)
@@ -173,7 +182,11 @@ class SHLinkDecoderImplTest {
   @Test
   fun `test decodeSHLinkToDocument with an invalid SHL passed in`() = runBlocking {
     val result = runCatching {
-      shLinkDecoderImpl.decodeSHLinkToDocument("invalidLink", exampleJsonData)
+      shLinkDecoderImpl.decodeSHLinkToDocument(
+        "invalidLink",
+        "",
+        "",
+      )
     }
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()!!::class).isEqualTo(IllegalArgumentException::class)
@@ -182,7 +195,13 @@ class SHLinkDecoderImplTest {
 
   @Test
   fun `test decodeSHLinkToDocument with an empty SHL passed in`() = runBlocking {
-    val result = runCatching { shLinkDecoderImpl.decodeSHLinkToDocument("", exampleJsonData) }
+    val result = runCatching {
+      shLinkDecoderImpl.decodeSHLinkToDocument(
+        "",
+        "",
+        "",
+      )
+    }
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()!!::class).isEqualTo(IllegalArgumentException::class)
     assertThat(result.exceptionOrNull()!!.message).isEqualTo("Not a valid SHLink")
@@ -194,12 +213,16 @@ class SHLinkDecoderImplTest {
       MockResponse().setResponseCode(500).setBody(manifestFileResponseWithLocation.toString())
     mockWebServer.enqueue(mockResponse)
 
-    val jsonData = "test json data"
-
     `when`(readSHLinkUtils.extractUrl("fullLink")).thenReturn("extractedJson")
     `when`(readSHLinkUtils.decodeUrl("extractedJson")).thenReturn("{}".toByteArray())
 
-    val result = runCatching { shLinkDecoderImpl.decodeSHLinkToDocument(exampleSHL, jsonData) }
+    val result = runCatching {
+      shLinkDecoderImpl.decodeSHLinkToDocument(
+        exampleSHL,
+        "",
+        "",
+      )
+    }
 
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()!!::class).isEqualTo(Error::class)
@@ -222,7 +245,12 @@ class SHLinkDecoderImplTest {
         "{\"vc\": {\"credentialSubject\":{\"fhirBundle\":{\"resourceType\":\"Bundle\"}}}}",
       )
 
-    val result = shLinkDecoderImpl.decodeSHLinkToDocument(exampleSHL, exampleJsonData)
+    val result =
+      shLinkDecoderImpl.decodeSHLinkToDocument(
+        exampleSHL,
+        "",
+        "",
+      )
     assertThat(result).isNotNull()
     assertThat(result!!.document).isNotNull()
 

@@ -52,13 +52,13 @@ data class SHLinkScanData(
   val expirationTime: String,
   val versionNumber: String,
   val ipsDoc: IPSDocument?,
+
 ) : Serializable {
 
   companion object {
     fun create(fullLink: String): SHLinkScanData {
       val extractedJson = ReadSHLinkUtils.extractUrl(fullLink)
       val decodedJson = ReadSHLinkUtils.decodeUrl(extractedJson)
-
       try {
         val jsonObject = JSONObject(String(decodedJson, StandardCharsets.UTF_8))
         return SHLinkScanData(

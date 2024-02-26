@@ -43,6 +43,7 @@ data class IPSDocument(
 
   companion object {
     fun create(bundle: Bundle): IPSDocument {
+      Log.d("BUNDLE", bundle.entry.first().fullUrl)
       val composition =
         bundle.entry?.firstOrNull { it.resource.resourceType == ResourceType.Composition }?.resource
           as Composition

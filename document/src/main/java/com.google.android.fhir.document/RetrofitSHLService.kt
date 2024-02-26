@@ -23,7 +23,6 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -51,7 +50,7 @@ interface RetrofitSHLService {
   @Headers("Content-Type: application/json")
   suspend fun postPayload(
     @Url path: String,
-    @Body contentEncrypted: String,
+    @Body contentEncrypted: RequestBody,
     @Header("Authorization") authorization: String,
   ): Response<ResponseBody>
 
@@ -60,7 +59,7 @@ interface RetrofitSHLService {
   @Headers("Content-Type: application/json")
   suspend fun getFilesFromManifest(
     @Url path: String,
-    @Body jsonData: JSONObject,
+    @Body request: RequestBody,
   ): Response<ResponseBody>
 
   /* GET request if files are stored in an external "location" */
