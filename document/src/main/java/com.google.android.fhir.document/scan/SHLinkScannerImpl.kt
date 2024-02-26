@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.android.fhir.library.scan
+package com.google.android.fhir.document.scan
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
-import com.google.android.fhir.document.scan.SHLinkScanData
-import com.google.android.fhir.document.scan.SHLinkScanner
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Detector.Detections
@@ -33,7 +31,7 @@ import java.io.IOException
 class SHLinkScannerImpl(private val context: Context, private val surfaceHolder: SurfaceHolder) :
   SHLinkScanner {
 
-  private lateinit var cameraSource: com.google.android.gms.vision.CameraSource
+  private lateinit var cameraSource: CameraSource
   private lateinit var barcodeDetector: BarcodeDetector
   private var scanCallback: ((SHLinkScanData) -> Unit)? = null
   private var failCallback: ((Error) -> Unit)? = null

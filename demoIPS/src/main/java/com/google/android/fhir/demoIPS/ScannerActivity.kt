@@ -21,7 +21,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.SurfaceView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.fhir.library.scan.SHLinkScannerImpl
+import com.google.android.fhir.document.scan.SHLinkScannerImpl
 import java.io.Serializable
 
 class ScannerActivity : AppCompatActivity() {
