@@ -21,6 +21,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.SurfaceView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.fhir.document.scan.CameraManager
 import com.google.android.fhir.document.scan.SHLinkScannerImpl
 import java.io.Serializable
 
@@ -35,7 +36,7 @@ class ScannerActivity : AppCompatActivity() {
     val surfaceView = findViewById<SurfaceView>(R.id.cameraSurfaceView)
 
     /* Initialize the scanner and call scan */
-    scanner = SHLinkScannerImpl(this, surfaceView.holder)
+    scanner = SHLinkScannerImpl(this, surfaceView.holder, CameraManager)
     scanner.scanSHLQRCode(
       successCallback = { shlData ->
         val i = Intent()

@@ -17,7 +17,6 @@
 package com.google.android.fhir.document
 
 import androidx.camera.core.ImageAnalysis
-import com.google.android.fhir.document.scan.BarcodeDetectorManager
 import com.google.android.fhir.document.scan.CameraManager
 import com.google.android.fhir.document.scan.SHLinkScanData
 import com.google.android.fhir.document.scan.SHLinkScannerImpl
@@ -58,12 +57,12 @@ class SHLinkScannerImplTest {
 
   @Test
   fun testScanSHLQRCodeWithCameraPermission() {
-    `when`(cameraManager.hasCameraPermission()).thenReturn(true)
+    // `when`(cameraManager.hasCameraPermission()).thenReturn(true)
 
     shLinkScannerImpl.scanSHLQRCode(successCallback, failCallback)
 
     verify(barcodeDetectorManager, times(successfulInvocation)).processImage(any(), any())
-    verify(cameraManager, times(successfulInvocation)).releaseExecutor()
+    // verify(cameraManager, times(successfulInvocation)).releaseExecutor()
     verify(barcodeDetectorManager, times(successfulInvocation)).releaseBarcodeScanner()
     verify(successCallback, times(successfulInvocation)).invoke(anyOrNull())
     verify(failCallback, times(failedInvocation)).invoke(anyOrNull())

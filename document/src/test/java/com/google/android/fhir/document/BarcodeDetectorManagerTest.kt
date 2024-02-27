@@ -19,7 +19,6 @@ package com.google.android.fhir.document
 import androidx.camera.core.ImageInfo
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.ImageProxy.PlaneProxy
-import com.google.android.fhir.document.scan.BarcodeDetectorManager
 import com.google.mlkit.common.sdkinternal.MlKitContext
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
