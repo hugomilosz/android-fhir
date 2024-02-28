@@ -12,9 +12,7 @@ class AppFhirSyncWorker(appContext: Context, workerParams: WorkerParameters) :
   override fun getDownloadWorkManager() = DownloadWorkManagerImpl()
 
   override fun getConflictResolver() = AcceptLocalConflictResolver
-  override fun getUploadStrategy(): UploadStrategy {
-    TODO("Not yet implemented")
-  }
+  override fun getUploadStrategy() = UploadStrategy.AllChangesSquashedBundlePut
 
   override fun getFhirEngine() = FhirApplication.fhirEngine(applicationContext)
 }

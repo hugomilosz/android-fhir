@@ -32,6 +32,7 @@ import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType
 
+
 class SelectIndividualResourcesViewModel : ViewModel() {
   private var selectedTitles = listOf<Title>()
   private val parser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()

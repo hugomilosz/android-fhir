@@ -19,13 +19,12 @@ package com.google.android.fhir.demoIPS
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.google.android.fhir.DatabaseErrorStrategy.RECREATE_AT_OPEN
+import com.google.android.fhir.DatabaseErrorStrategy
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.FhirEngineConfiguration
 import com.google.android.fhir.FhirEngineProvider
 import com.google.android.fhir.ServerConfiguration
 import com.google.android.fhir.sync.remote.HttpLogger
-import timber.log.Timber
 
 class FhirApplication : Application() {
   // Only initiate the FhirEngine when used for the first time, not when the app is created.
@@ -33,15 +32,12 @@ class FhirApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
-    }
     FhirEngineProvider.init(
       FhirEngineConfiguration(
         enableEncryptionIfSupported = true,
-        RECREATE_AT_OPEN,
+        DatabaseErrorStrategy.RECREATE_AT_OPEN,
         ServerConfiguration(
-          baseUrl = "http://10.0.2.2:8080/fhir/",
+          baseUrl = "https://hapi.fhir.org/baseR4/",
           httpLogger =
           HttpLogger(
             HttpLogger.Configuration(

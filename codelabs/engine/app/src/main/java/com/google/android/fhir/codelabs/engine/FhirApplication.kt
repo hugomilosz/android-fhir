@@ -20,12 +20,35 @@ import android.app.Application
 
 class FhirApplication : Application() {
   // Add code to create companion object to access fhirEngine
+  private val fhirEngine: FhirEngine by
+  lazy { FhirEngineProvider.getInstance(this) }
 
   override fun onCreate() {
     super.onCreate()
 
     // Add code to initialise the FHIR Engine
+    FhirEngineProvider.init(
+      FhirEngineConfiguration(
+        enableEncryptionIfSupported = true,
+        RECREATE_AT_OPEN,
+        ServerConfiguration(
+          baseUrl = "http://10.0.2.2:8080/fhir/",
+          httpLogger =
+          HttpLogger(
+            HttpLogger.Configuration(
+              if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
+            ),
+          ) {
+            Log.d("App-HttpLog", it)
+          },
+        ),
+      ),
+    )
   }
 
   // Add code to create companion object to access fhirEngine
+  companion object {
+    fun fhirEngine(context: Context) =
+      (context.applicationContext as FhirApplication).fhirEngine
+  }
 }
