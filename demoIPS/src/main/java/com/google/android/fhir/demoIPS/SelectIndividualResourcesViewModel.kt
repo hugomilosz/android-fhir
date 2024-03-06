@@ -27,7 +27,6 @@ import com.google.android.fhir.document.generate.DocumentGeneratorUtils
 import com.google.android.fhir.document.generate.DocumentUtils
 import com.google.android.fhir.document.generate.SelectResourcesImpl
 import com.google.android.fhir.document.generate.hasCode
-import org.hl7.fhir.r4.model.Bundle
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType
@@ -42,13 +41,12 @@ class SelectIndividualResourcesViewModel : ViewModel() {
   private val checkboxTitleMap = mutableMapOf<String, String>()
 
   /* Get the FHIR resources and display them as checkboxes for the patient to select */
-  fun initializeData(context: Context, file: String) {
+  fun initializeData(context: Context, data: Resource) {
     val docUtils = DocumentUtils
-    val doc = docUtils.readFileFromAssets(context, "immunizationBundle.json")
-    val ipsDoc = IPSDocument.create(parser.parseResource(doc) as Bundle)
-    selectedTitles = documentGenerator.displayOptions(context, ipsDoc, checkBoxes, checkboxTitleMap)
+    val ipsDocument = SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(listOf(data))
+    selectedTitles = documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
     patient =
-      ipsDoc.document.entry
+      ipsDocument.document.entry
         .firstOrNull { it.resource.resourceType == ResourceType.Patient }
         ?.resource
         ?: Patient()

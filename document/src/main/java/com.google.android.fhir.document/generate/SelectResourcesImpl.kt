@@ -17,7 +17,6 @@
 package com.google.android.fhir.document.generate
 
 import android.content.Context
-import android.util.Log
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -96,7 +95,6 @@ class SelectResourcesImpl(
 
   /* Returns a map of all the sections in the document to the list of resources listed under that section */
   private fun getDataFromDoc(doc: IPSDocument): List<Title> {
-    Log.d("Thing", doc.titles.toString())
     for (title in doc.titles) {
       val filteredResources =
         doc.document.entry

@@ -305,7 +305,6 @@ object DocumentGeneratorUtils {
         },
       )
     }
-    // Log.d("RESSSSS", pars)
     return bundle
   }
 }

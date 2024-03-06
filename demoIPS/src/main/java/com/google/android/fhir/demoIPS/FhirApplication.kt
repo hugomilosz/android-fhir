@@ -37,7 +37,7 @@ class FhirApplication : Application() {
         enableEncryptionIfSupported = true,
         DatabaseErrorStrategy.RECREATE_AT_OPEN,
         ServerConfiguration(
-          baseUrl = "https://hapi.fhir.org/baseR4/",
+          baseUrl = "http://hapi.fhir.org/baseR4/",
           httpLogger =
           HttpLogger(
             HttpLogger.Configuration(
