@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     val doc = DocumentUtils.readFileFromAssets(this, "immunizationBundle.json")
     val ipsDoc = jsonParser.parseResource(doc) as Bundle
     lifecycleScope.launch {
-      // fhirEngine.create(ipsDoc)
       for (entry in ipsDoc.entry) {
         fhirEngine.create(entry.resource)
       }
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     val generateQRButton = findViewById<Button>(R.id.generateQRButton)
     generateQRButton.setOnClickListener {
       val i = Intent()
-      i.component = ComponentName(this@MainActivity, SelectDocument::class.java)
+      i.component = ComponentName(this@MainActivity, SelectIndividualResources::class.java)
       startActivity(i)
     }
   }

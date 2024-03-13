@@ -64,6 +64,5 @@ dependencies {
   implementation(project(":engine"))
   implementation(project(":document"))
 
-
   testImplementation(Dependencies.junit)
 }

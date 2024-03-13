@@ -31,7 +31,6 @@ import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType
 
-
 class SelectIndividualResourcesViewModel : ViewModel() {
   private var selectedTitles = listOf<Title>()
   private val parser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
@@ -41,10 +40,10 @@ class SelectIndividualResourcesViewModel : ViewModel() {
   private val checkboxTitleMap = mutableMapOf<String, String>()
 
   /* Get the FHIR resources and display them as checkboxes for the patient to select */
-  fun initializeData(context: Context, data: Resource) {
-    val docUtils = DocumentUtils
-    val ipsDocument = SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(listOf(data))
-    selectedTitles = documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
+  fun initializeData(context: Context, data: ArrayList<Resource>) {
+    val ipsDocument = SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(data)
+    selectedTitles =
+      documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
     patient =
       ipsDocument.document.entry
         .firstOrNull { it.resource.resourceType == ResourceType.Patient }

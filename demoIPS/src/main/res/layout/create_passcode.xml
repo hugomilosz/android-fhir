@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="optionally_add_a_passcode_a_label_or_an_expiration_date"
+        android:text="Optionally add a passcode, label or expiration_date"
     />
 
   <EditText
@@ -21,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/textView"
-        android:hint="Enter Passcode"
+        android:hint="Enter an Optional Passcode"
     />
 
   <EditText
@@ -31,7 +31,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/passcode"
         android:maxLength="80"
-        android:hint="enter_an_optional_label"
+        android:hint="Enter an Optional Label"
     />
 
   <CheckBox
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/label"
-        android:text="do_you_want_to_include_an_expiration_date"
+        android:text="Do you want to include an expiration date?"
     />
 
   <DatePicker
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_below="@+id/datePicker"
-        android:text="String"
+        android:text="Generate SHL"
     />
 
 </RelativeLayout>

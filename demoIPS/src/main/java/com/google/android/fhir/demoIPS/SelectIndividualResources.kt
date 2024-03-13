@@ -24,18 +24,41 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.fhir.document.generate.SHLinkGenerationData
+import com.google.android.fhir.search.Search
 import java.io.Serializable
+import kotlinx.coroutines.launch
+import org.hl7.fhir.r4.model.AllergyIntolerance
 import org.hl7.fhir.r4.model.Resource
+import org.hl7.fhir.r4.model.ResourceType
 
 class SelectIndividualResources : AppCompatActivity() {
 
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   private fun initialiseViewModel() {
-    val data = intent.getSerializableExtra("selectedCompositions", Resource::class.java)
     val viewModel = ViewModelProvider(this)[SelectIndividualResourcesViewModel::class.java]
-    if (data != null) {
-      viewModel.initializeData(this, data)
+    val fhirEngine = FhirApplication.fhirEngine(this)
+    val resources = ArrayList<Resource>()
+
+    lifecycleScope.launch {
+      val allergyIntoleranceResults =
+        fhirEngine.search<AllergyIntolerance>(
+          Search(
+            ResourceType.AllergyIntolerance,
+          ),
+        )
+
+      val conditionResults =
+        fhirEngine.search<Resource>(
+          Search(
+            ResourceType.Condition,
+          ),
+        )
+
+      resources.addAll(allergyIntoleranceResults.map { it.resource })
+      resources.addAll(conditionResults.map { it.resource })
+      viewModel.initializeData(this@SelectIndividualResources, resources)
     }
 
     val submitButton = findViewById<Button>(R.id.goToCreatePasscode)

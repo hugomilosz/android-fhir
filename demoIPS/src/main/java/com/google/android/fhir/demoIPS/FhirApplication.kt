@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Google LLC
+ * Copyright 2023-2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,13 @@ class FhirApplication : Application() {
         ServerConfiguration(
           baseUrl = "http://hapi.fhir.org/baseR4/",
           httpLogger =
-          HttpLogger(
-            HttpLogger.Configuration(
-              if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
-            ),
-          ) {
-            Log.d("App-HttpLog", it)
-          },
+            HttpLogger(
+              HttpLogger.Configuration(
+                if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
+              ),
+            ) {
+              Log.d("App-HttpLog", it)
+            },
         ),
       ),
     )
@@ -58,5 +58,4 @@ class FhirApplication : Application() {
   companion object {
     fun fhirEngine(context: Context) = (context.applicationContext as FhirApplication).fhirEngine
   }
-
 }
