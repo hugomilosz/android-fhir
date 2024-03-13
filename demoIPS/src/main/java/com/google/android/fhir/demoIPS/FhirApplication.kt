@@ -19,12 +19,19 @@ package com.google.android.fhir.demoIPS
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import ca.uhn.fhir.context.FhirContext
+import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.DatabaseErrorStrategy
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.FhirEngineConfiguration
 import com.google.android.fhir.FhirEngineProvider
 import com.google.android.fhir.ServerConfiguration
+import com.google.android.fhir.document.generate.DocumentUtils
 import com.google.android.fhir.sync.remote.HttpLogger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.hl7.fhir.r4.model.Bundle
 
 class FhirApplication : Application() {
   // Only initiate the FhirEngine when used for the first time, not when the app is created.
@@ -39,16 +46,25 @@ class FhirApplication : Application() {
         ServerConfiguration(
           baseUrl = "http://hapi.fhir.org/baseR4/",
           httpLogger =
-            HttpLogger(
-              HttpLogger.Configuration(
-                if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
-              ),
-            ) {
-              Log.d("App-HttpLog", it)
-            },
+          HttpLogger(
+            HttpLogger.Configuration(
+              if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
+            ),
+          ) {
+            Log.d("App-HttpLog", it)
+          },
         ),
       ),
     )
+    val fhirContext = FhirContext.forCached(FhirVersionEnum.R4)
+    val jsonParser = fhirContext.newJsonParser()
+    val document = DocumentUtils.readFileFromAssets(this, "immunizationBundle.json")
+    val ipsDocument = jsonParser.parseResource(document) as Bundle
+    CoroutineScope(Dispatchers.IO).launch {
+      for (entry in ipsDocument.entry) {
+        fhirEngine.create(entry.resource)
+      }
+    }
   }
 
   private fun constructFhirEngine(): FhirEngine {

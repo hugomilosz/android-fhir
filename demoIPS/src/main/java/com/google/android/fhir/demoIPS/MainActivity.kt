@@ -24,12 +24,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
-import ca.uhn.fhir.context.FhirContext
-import ca.uhn.fhir.context.FhirVersionEnum
-import com.google.android.fhir.document.generate.DocumentUtils
-import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.Bundle
 
 class MainActivity : AppCompatActivity() {
   private val cameraPermissionRequest = 123
@@ -37,18 +31,6 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: android.os.Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    val fhirEngine = FhirApplication.fhirEngine(application.applicationContext)
-    val fhirContext = FhirContext.forCached(FhirVersionEnum.R4)
-    val jsonParser = fhirContext.newJsonParser()
-    val doc = DocumentUtils.readFileFromAssets(this, "immunizationBundle.json")
-    println(doc)
-    val ipsDoc = jsonParser.parseResource(doc) as Bundle
-    lifecycleScope.launch {
-      for (entry in ipsDoc.entry) {
-        fhirEngine.create(entry.resource)
-      }
-    }
-
     val openCameraButton = findViewById<Button>(R.id.scanQRButton)
     openCameraButton.setOnClickListener {
       if (

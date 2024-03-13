@@ -68,6 +68,10 @@ object DocumentGeneratorUtils {
     return section
   }
 
+  fun random() {
+    BaseIps
+  }
+
   /* Creates an Organization object from a given Organization reference */
   fun createOrganizationFromReference(reference: Reference): Organization {
     val organization = Organization()
