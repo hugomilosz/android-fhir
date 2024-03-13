@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     val fhirContext = FhirContext.forCached(FhirVersionEnum.R4)
     val jsonParser = fhirContext.newJsonParser()
     val doc = DocumentUtils.readFileFromAssets(this, "immunizationBundle.json")
+    println(doc)
     val ipsDoc = jsonParser.parseResource(doc) as Bundle
     lifecycleScope.launch {
       for (entry in ipsDoc.entry) {

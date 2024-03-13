@@ -56,8 +56,16 @@ class SelectIndividualResources : AppCompatActivity() {
           ),
         )
 
+      val immunizationResults =
+        fhirEngine.search<Resource>(
+          Search(
+            ResourceType.Immunization,
+          ),
+        )
+
       resources.addAll(allergyIntoleranceResults.map { it.resource })
       resources.addAll(conditionResults.map { it.resource })
+      resources.addAll(immunizationResults.map { it.resource })
       viewModel.initializeData(this@SelectIndividualResources, resources)
     }
 
