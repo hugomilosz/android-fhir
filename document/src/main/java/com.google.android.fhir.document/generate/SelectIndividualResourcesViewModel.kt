@@ -19,36 +19,68 @@ package com.google.android.fhir.demoIPS
 import android.content.Context
 import android.widget.CheckBox
 import androidx.lifecycle.ViewModel
-import ca.uhn.fhir.context.FhirContext
-import ca.uhn.fhir.context.FhirVersionEnum
+import androidx.lifecycle.viewModelScope
+import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.Title
 import com.google.android.fhir.document.generate.DocumentGeneratorUtils
 import com.google.android.fhir.document.generate.DocumentUtils
 import com.google.android.fhir.document.generate.SelectResourcesImpl
 import com.google.android.fhir.document.generate.hasCode
+import com.google.android.fhir.search.Search
+import kotlinx.coroutines.launch
+import org.hl7.fhir.r4.model.AllergyIntolerance
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType
 
 class SelectIndividualResourcesViewModel : ViewModel() {
   private var selectedTitles = listOf<Title>()
-  private val parser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
   private val documentGenerator = SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils)
   private lateinit var patient: Resource
   private val checkBoxes = mutableListOf<CheckBox>()
   private val checkboxTitleMap = mutableMapOf<String, String>()
 
   /* Get the FHIR resources and display them as checkboxes for the patient to select */
-  fun initializeData(context: Context, data: ArrayList<Resource>) {
-    val ipsDocument = SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(data)
-    selectedTitles =
-      documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
-    patient =
-      ipsDocument.document.entry
-        .firstOrNull { it.resource.resourceType == ResourceType.Patient }
-        ?.resource
-        ?: Patient()
+  fun initializeData(context: Context, fhirEngine: FhirEngine) {
+    val resources = ArrayList<Resource>()
+
+    viewModelScope.launch {
+      val allergyIntoleranceResults =
+        fhirEngine.search<AllergyIntolerance>(
+          Search(
+            ResourceType.AllergyIntolerance,
+          ),
+        )
+
+      val conditionResults =
+        fhirEngine.search<Resource>(
+          Search(
+            ResourceType.Condition,
+          ),
+        )
+
+      val immunizationResults =
+        fhirEngine.search<Resource>(
+          Search(
+            ResourceType.Immunization,
+          ),
+        )
+
+      resources.addAll(allergyIntoleranceResults.map { it.resource })
+      resources.addAll(conditionResults.map { it.resource })
+      resources.addAll(immunizationResults.map { it.resource })
+
+      val ipsDocument =
+        SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(resources)
+      selectedTitles =
+        documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
+      patient =
+        ipsDocument.document.entry
+          .firstOrNull { it.resource.resourceType == ResourceType.Patient }
+          ?.resource
+          ?: Patient()
+    }
   }
 
   /* Filter through the selected checkboxes and generate an IPS document

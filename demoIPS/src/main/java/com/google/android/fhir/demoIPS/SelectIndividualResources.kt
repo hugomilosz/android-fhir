@@ -24,57 +24,23 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.google.android.fhir.document.generate.SHLinkGenerationData
-import com.google.android.fhir.search.Search
 import java.io.Serializable
-import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.AllergyIntolerance
-import org.hl7.fhir.r4.model.Resource
-import org.hl7.fhir.r4.model.ResourceType
 
 class SelectIndividualResources : AppCompatActivity() {
 
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   private fun initialiseViewModel() {
     val viewModel = ViewModelProvider(this)[SelectIndividualResourcesViewModel::class.java]
-    val fhirEngine = FhirApplication.fhirEngine(this)
-    val resources = ArrayList<Resource>()
 
-    lifecycleScope.launch {
-      val allergyIntoleranceResults =
-        fhirEngine.search<AllergyIntolerance>(
-          Search(
-            ResourceType.AllergyIntolerance,
-          ),
-        )
-
-      val conditionResults =
-        fhirEngine.search<Resource>(
-          Search(
-            ResourceType.Condition,
-          ),
-        )
-
-      val immunizationResults =
-        fhirEngine.search<Resource>(
-          Search(
-            ResourceType.Immunization,
-          ),
-        )
-
-      resources.addAll(allergyIntoleranceResults.map { it.resource })
-      resources.addAll(conditionResults.map { it.resource })
-      resources.addAll(immunizationResults.map { it.resource })
-      viewModel.initializeData(this@SelectIndividualResources, resources)
-    }
+    viewModel.initializeData(this, FhirApplication.fhirEngine(this))
 
     val submitButton = findViewById<Button>(R.id.goToCreatePasscode)
     submitButton.setOnClickListener {
       val ipsDoc = viewModel.generateIPSDocument()
       val shlData = SHLinkGenerationData("", null, ipsDoc)
       val i = Intent()
-      i.component = ComponentName(this@SelectIndividualResources, CreatePasscode::class.java)
+      i.component = ComponentName(this, CreatePasscode::class.java)
       i.putExtra("shlData", shlData as Serializable)
       startActivity(i)
     }
