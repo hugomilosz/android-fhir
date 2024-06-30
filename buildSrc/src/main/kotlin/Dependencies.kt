@@ -19,6 +19,7 @@ import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.kotlin.dsl.exclude
 
 object Dependencies {
+<<<<<<< HEAD
 
   object Androidx {
     const val activity = "androidx.activity:activity:${Versions.Androidx.activity}"
@@ -37,6 +38,8 @@ object Dependencies {
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.Androidx.workRuntimeKtx}"
   }
 
+=======
+>>>>>>> upstream/master
   object Cql {
     const val evaluator = "org.opencds.cqf.fhir:cqf-fhir-cr:${Versions.Cql.clinicalReasoning}"
     const val evaluatorFhirJackson =
@@ -51,7 +54,6 @@ object Dependencies {
     const val structuresDstu2Module = "ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2"
     const val structuresDstu3Module = "ca.uhn.hapi.fhir:hapi-fhir-structures-dstu3"
     const val structuresR4Module = "ca.uhn.hapi.fhir:hapi-fhir-structures-r4"
-    const val structuresR4bModule = "ca.uhn.hapi.fhir:hapi-fhir-structures-r4b"
     const val structuresR5Module = "ca.uhn.hapi.fhir:hapi-fhir-structures-r5"
 
     const val validationModule = "ca.uhn.hapi.fhir:hapi-fhir-validation"
@@ -70,26 +72,11 @@ object Dependencies {
 
     const val guavaCachingModule = "ca.uhn.hapi.fhir:hapi-fhir-caching-guava"
 
-    const val fhirBase = "$fhirBaseModule:${Versions.hapiFhir}"
-    const val fhirClient = "$fhirClientModule:${Versions.hapiFhir}"
-    const val structuresDstu2 = "$structuresDstu2Module:${Versions.hapiFhir}"
-    const val structuresDstu3 = "$structuresDstu3Module:${Versions.hapiFhir}"
     const val structuresR4 = "$structuresR4Module:${Versions.hapiFhir}"
-    const val structuresR4b = "$structuresR4bModule:${Versions.hapiFhir}"
-    const val structuresR5 = "$structuresR5Module:${Versions.hapiFhir}"
 
     const val validation = "$validationModule:${Versions.hapiFhir}"
-    const val validationDstu3 = "$validationDstu3Module:${Versions.hapiFhir}"
     const val validationR4 = "$validationR4Module:${Versions.hapiFhir}"
-    const val validationR5 = "$validationR5Module:${Versions.hapiFhir}"
 
-    const val fhirCoreDstu2 = "$fhirCoreDstu2Module:${Versions.hapiFhirCore}"
-    const val fhirCoreDstu2016 = "$fhirCoreDstu2016Module:${Versions.hapiFhirCore}"
-    const val fhirCoreDstu3 = "$fhirCoreDstu3Module:${Versions.hapiFhirCore}"
-    const val fhirCoreR4 = "$fhirCoreR4Module:${Versions.hapiFhirCore}"
-    const val fhirCoreR4b = "$fhirCoreR4bModule:${Versions.hapiFhirCore}"
-    const val fhirCoreR5 = "$fhirCoreR5Module:${Versions.hapiFhirCore}"
-    const val fhirCoreUtils = "$fhirCoreUtilsModule:${Versions.hapiFhirCore}"
     const val fhirCoreConvertors = "$fhirCoreConvertorsModule:${Versions.hapiFhirCore}"
 
     const val guavaCaching = "$guavaCachingModule:${Versions.hapiFhir}"
@@ -125,30 +112,9 @@ object Dependencies {
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.Kotlin.stdlib}"
   }
 
-  object Lifecycle {
-    const val liveDataKtx =
-      "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Androidx.lifecycle}"
-    const val runtime = "androidx.lifecycle:lifecycle-runtime:${Versions.Androidx.lifecycle}"
-    const val viewModelKtx =
-      "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.Androidx.lifecycle}"
-  }
-
-  object Navigation {
-    const val navFragmentKtx =
-      "androidx.navigation:navigation-fragment-ktx:${Versions.Androidx.navigation}"
-    const val navUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.Androidx.navigation}"
-  }
-
   object Retrofit {
     const val coreRetrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val gsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-  }
-
-  object Room {
-    const val compiler = "androidx.room:room-compiler:${Versions.Androidx.room}"
-    const val ktx = "androidx.room:room-ktx:${Versions.Androidx.room}"
-    const val runtime = "androidx.room:room-runtime:${Versions.Androidx.room}"
-    const val testing = "androidx.room:room-testing:${Versions.Androidx.room}"
   }
 
   object Mlkit {
@@ -176,7 +142,6 @@ object Dependencies {
 
   const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${Versions.desugarJdkLibs}"
   const val fhirUcum = "org.fhir:ucum:${Versions.fhirUcum}"
-  const val gson = "com.google.code.gson:gson:${Versions.gson}"
 
   const val guavaModule = "com.google.guava:guava"
   const val guava = "$guavaModule:${Versions.guava}"
@@ -207,8 +172,6 @@ object Dependencies {
       "androidx.fragment:fragment-testing:${Versions.AndroidxTest.fragmentVersion}"
     const val rules = "androidx.test:rules:${Versions.AndroidxTest.rules}"
     const val runner = "androidx.test:runner:${Versions.AndroidxTest.runner}"
-    const val workTestingRuntimeKtx =
-      "androidx.work:work-testing:${Versions.Androidx.workRuntimeKtx}"
   }
 
   object Espresso {
@@ -231,6 +194,7 @@ object Dependencies {
   const val xmlUnit = "org.xmlunit:xmlunit-core:${Versions.xmlUnit}"
 
   object Versions {
+<<<<<<< HEAD
     object Androidx {
       const val activity = "1.7.2"
       const val appCompat = "1.6.1"
@@ -247,6 +211,8 @@ object Dependencies {
       const val sqliteKtx = "2.3.1"
       const val workRuntimeKtx = "2.8.1"
     }
+=======
+>>>>>>> upstream/master
 
     object Cql {
       const val clinicalReasoning = "3.0.0-PRE9-SNAPSHOT"
@@ -254,7 +220,7 @@ object Dependencies {
 
     object Kotlin {
       const val kotlinCoroutinesCore = "1.7.2"
-      const val stdlib = "1.8.20"
+      const val stdlib = "1.9.22"
     }
 
     const val androidFhirCommon = "0.1.0-alpha05"
@@ -264,7 +230,6 @@ object Dependencies {
     const val desugarJdkLibs = "2.0.3"
     const val caffeine = "2.9.1"
     const val fhirUcum = "1.0.3"
-    const val gson = "2.9.1"
     const val guava = "32.1.3-android"
 
     const val hapiFhir = "6.8.0"
@@ -336,7 +301,7 @@ object Dependencies {
   }
 
   fun hapiFhirConstraints(): Map<String, DependencyConstraint.() -> Unit> {
-    return mutableMapOf<String, DependencyConstraint.() -> Unit>(
+    return mutableMapOf(
       guavaModule to { version { strictly(Versions.guava) } },
       HapiFhir.fhirBaseModule to { version { strictly(Versions.hapiFhir) } },
       HapiFhir.fhirClientModule to { version { strictly(Versions.hapiFhir) } },

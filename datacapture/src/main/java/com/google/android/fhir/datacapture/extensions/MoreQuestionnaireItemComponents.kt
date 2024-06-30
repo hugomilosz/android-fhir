@@ -26,6 +26,8 @@ import ca.uhn.fhir.util.UrlUtil
 import com.google.android.fhir.datacapture.DataCapture
 import com.google.android.fhir.datacapture.QuestionnaireViewHolderType
 import com.google.android.fhir.datacapture.fhirpath.evaluateToDisplay
+import com.google.android.fhir.datacapture.validation.MAX_VALUE_EXTENSION_URL
+import com.google.android.fhir.datacapture.validation.MIN_VALUE_EXTENSION_URL
 import com.google.android.fhir.getLocalizedText
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -42,6 +44,7 @@ import org.hl7.fhir.r4.model.DecimalType
 import org.hl7.fhir.r4.model.Expression
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Questionnaire
+import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.hl7.fhir.r4.model.Reference
 import org.hl7.fhir.r4.model.Resource
@@ -82,9 +85,6 @@ internal const val EXTENSION_CHOICE_ORIENTATION_URL =
 internal const val EXTENSION_CHOICE_COLUMN_URL: String =
   "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-choiceColumn"
 
-internal const val EXTENSION_CQF_CALCULATED_VALUE_URL: String =
-  "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue"
-
 internal const val EXTENSION_DISPLAY_CATEGORY_URL =
   "http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory"
 
@@ -113,6 +113,27 @@ internal const val EXTENSION_ITEM_MEDIA =
 internal const val EXTENSION_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize"
 
 internal const val EXTENSION_MIME_TYPE = "http://hl7.org/fhir/StructureDefinition/mimeType"
+
+/**
+ * Extension for questionnaire and its items, representing a rule that must be satisfied before
+ * [QuestionnaireResponse] can be considered valid.
+ *
+ * See https://hl7.org/fhir/extensions/StructureDefinition-questionnaire-constraint.html.
+ */
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_URL =
+  "http://hl7.org/fhir/StructureDefinition/questionnaire-constraint"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_KEY = "key"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_REQUIREMENTS = "requirements"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_SEVERITY = "severity"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_EXPRESSION = "expression"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_HUMAN = "human"
+
+internal const val EXTENSION_QUESTIONNAIRE_CONSTRAINT_LOCATION = "location"
 
 /**
  * Extension for questionnaire items of integer and decimal types including a single unit to be
@@ -293,6 +314,18 @@ val Questionnaire.QuestionnaireItemComponent.sliderStepValue: Int?
     }
     return null
   }
+
+internal val Questionnaire.QuestionnaireItemComponent.minValue
+  get() = getExtensionByUrl(MIN_VALUE_EXTENSION_URL)?.value
+
+internal val Questionnaire.QuestionnaireItemComponent.minValueCqfCalculatedValueExpression
+  get() = getExtensionByUrl(MIN_VALUE_EXTENSION_URL)?.value?.cqfCalculatedValueExpression
+
+internal val Questionnaire.QuestionnaireItemComponent.maxValue
+  get() = getExtensionByUrl(MAX_VALUE_EXTENSION_URL)?.value
+
+internal val Questionnaire.QuestionnaireItemComponent.maxValueCqfCalculatedValueExpression
+  get() = getExtensionByUrl(MAX_VALUE_EXTENSION_URL)?.value?.cqfCalculatedValueExpression
 
 // ********************************************************************************************** //
 //                                                                                                //
@@ -582,6 +615,12 @@ internal val Questionnaire.QuestionnaireItemComponent.unitOption: List<Coding>
     return this.extension
       .filter { it.url == EXTENSION_QUESTIONNAIRE_UNIT_OPTION_URL }
       .map { it.value as Coding }
+      .plus(
+        // https://build.fhir.org/ig/HL7/sdc/behavior.html#initial
+        // quantity given as initial without value is for default unit reference purpose
+        this.initial.map { it.valueQuantity.toCoding() },
+      )
+      .distinctBy { it.code }
   }
 
 // ********************************************************************************************** //
@@ -758,6 +797,14 @@ internal fun Questionnaire.QuestionnaireItemComponent.extractAnswerOptions(
   }.map { Questionnaire.QuestionnaireItemAnswerOptionComponent(it) }
 }
 
+/** See http://hl7.org/fhir/constraint-severity */
+enum class ConstraintSeverityTypes(
+  val code: String,
+) {
+  ERROR("error"),
+  WARNING("warning"),
+}
+
 // ********************************************************************************************** //
 //                                                                                                //
 // Utilities: zip with questionnaire response item list, nested items, create response items,     //
@@ -790,6 +837,35 @@ internal inline fun <T> List<Questionnaire.QuestionnaireItemComponent>.zipByLink
     }
       ?: emptyList()
   }
+}
+
+/**
+ * Returns a list of values built from the elements of `this` and the
+ * `questionnaireResponseItemList` with the same linkId using the provided `transform` function
+ * applied to each pair of questionnaire item and questionnaire response item.
+ *
+ * In case of repeated group item, `questionnaireResponseItemList` will contain
+ * QuestionnaireResponseItemComponent with same linkId. So these items are grouped with linkId and
+ * associated with its questionnaire item linkId.
+ */
+internal inline fun <T> groupByAndZipByLinkId(
+  questionnaireItemList: List<Questionnaire.QuestionnaireItemComponent>,
+  questionnaireResponseItemList: List<QuestionnaireResponse.QuestionnaireResponseItemComponent>,
+  transform:
+    (
+      List<Questionnaire.QuestionnaireItemComponent>,
+      List<QuestionnaireResponse.QuestionnaireResponseItemComponent>,
+    ) -> T,
+): List<T> {
+  val linkIdToQuestionnaireItemListMap = questionnaireItemList.groupBy { it.linkId }
+  val linkIdToQuestionnaireResponseItemListMap = questionnaireResponseItemList.groupBy { it.linkId }
+  return (linkIdToQuestionnaireItemListMap.keys + linkIdToQuestionnaireResponseItemListMap.keys)
+    .map { linkId ->
+      transform(
+        linkIdToQuestionnaireItemListMap[linkId] ?: emptyList(),
+        linkIdToQuestionnaireResponseItemListMap[linkId] ?: emptyList(),
+      )
+    }
 }
 
 /**
@@ -839,7 +915,9 @@ fun Questionnaire.QuestionnaireItemComponent.createQuestionnaireResponseItem():
         !repeats
     ) {
       this@createQuestionnaireResponseItem.item.forEach {
-        this.addItem(it.createQuestionnaireResponseItem())
+        if (!it.isRepeatedGroup) {
+          this.addItem(it.createQuestionnaireResponseItem())
+        }
       }
     }
   }
@@ -908,6 +986,9 @@ private fun List<Questionnaire.QuestionnaireItemComponent>.flattenInto(
     it.item.flattenInto(output)
   }
 }
+
+internal val Questionnaire.QuestionnaireItemComponent.isRepeatedGroup: Boolean
+  get() = type == Questionnaire.QuestionnaireItemType.GROUP && repeats
 
 // TODO: Move this elsewhere.
 val Resource.logicalId: String

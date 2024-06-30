@@ -34,7 +34,6 @@ import org.hl7.fhir.r4.model.ResourceType
  *
  * @property document The FHIR Bundle itself, which contains the IPS document
  * @property titles A list of titles of the sections present in the document.
- * @property patient The FHIR Patient resource associated with the IPS document.
  */
 data class IPSDocument(
   val document: Bundle,

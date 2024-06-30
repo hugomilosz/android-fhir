@@ -27,6 +27,10 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.After
+<<<<<<< HEAD
+=======
+import org.junit.Assert.assertThrows
+>>>>>>> upstream/master
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -80,7 +84,18 @@ class SHLinkDecoderImplTest {
     "{\"files\": [{\"contentType\": \"application/smart-health-card\", \"embedded\": \"embeddedData\"}]}"
   private val filesWithLocation =
     "{\"files\": [{\"contentType\": \"application/smart-health-card\", \"location\": \"https://api.vaxx.link/api/shl/xRx3d4C3Q8M0nxZz6fsVXtf2-nPL9pQwAodQeUX71jc/file/EGxABJF-Co4oplPtLN87HpSlydj9K_BhCip1sGUvevY?ticket=...\"}]}"
+<<<<<<< HEAD
   private val testBundleString = "{\"resourceType\" : \"Bundle\"}"
+=======
+  private val testBundleString =
+    """
+    {
+      "resourceType": "Bundle",
+      "id": "bundle-example"
+    }
+    """
+      .trimIndent()
+>>>>>>> upstream/master
 
   @Before
   fun setUp() {
@@ -109,8 +124,13 @@ class SHLinkDecoderImplTest {
         "",
         "",
       )
+<<<<<<< HEAD
     assertThat(result).isNotNull()
     assertThat(result!!.document).isNotNull()
+=======
+
+    assertThat(result?.document?.id).isEqualTo("Bundle/bundle-example")
+>>>>>>> upstream/master
   }
 
   @Test
@@ -133,7 +153,11 @@ class SHLinkDecoderImplTest {
           "",
           "",
         )
+<<<<<<< HEAD
       assertThat(result).isNotNull()
+=======
+
+>>>>>>> upstream/master
       assertThat(result!!.document).isNotNull()
 
       val recordedRequestGetManifest: RecordedRequest = mockWebServer.takeRequest()
@@ -150,6 +174,7 @@ class SHLinkDecoderImplTest {
     }
 
   @Test
+<<<<<<< HEAD
   fun `test decodeSHLinkToDocument with no data stored at the external location provided`() =
     runBlocking {
       val mockResponse =
@@ -209,6 +234,70 @@ class SHLinkDecoderImplTest {
 
   @Test
   fun `test decodeSHLinkToDocument with an unsuccessful POST to the manifest URL`() = runBlocking {
+=======
+  fun `test decodeSHLinkToDocument with no data stored at the external location provided`() {
+    val mockResponse =
+      MockResponse()
+        .setResponseCode(200)
+        .setBody(
+          filesWithLocation,
+        )
+    mockWebServer.enqueue(mockResponse)
+
+    val mockGetLocationResponse = MockResponse().setResponseCode(200).setBody("")
+    mockWebServer.enqueue(mockGetLocationResponse)
+
+    `when`(readSHLinkUtils.extractUrl("fullLink")).thenReturn("extractedJson")
+    `when`(readSHLinkUtils.decodeUrl("extractedJson")).thenReturn("{}".toByteArray())
+    `when`(readSHLinkUtils.decodeShc(anyString(), anyString())).thenReturn(testBundleString)
+    `when`(readSHLinkUtils.extractVerifiableCredential(testBundleString)).thenReturn("")
+
+    val error =
+      assertThrows(Error::class.java) {
+        runBlocking {
+          shLinkDecoderImpl.decodeSHLinkToDocument(
+            exampleSHL,
+            "",
+            "",
+          )
+        }
+      }
+    assertThat(error.message).contains("No data found at the given location")
+  }
+
+  @Test
+  fun `test decodeSHLinkToDocument with an invalid SHL passed in`() {
+    val exception =
+      assertThrows(IllegalArgumentException::class.java) {
+        runBlocking {
+          shLinkDecoderImpl.decodeSHLinkToDocument(
+            "invalidLink",
+            "",
+            "",
+          )
+        }
+      }
+    assertThat(exception.message).isEqualTo("Not a valid SHLink")
+  }
+
+  @Test
+  fun `test decodeSHLinkToDocument with an empty SHL passed in`() {
+    val exception =
+      assertThrows(IllegalArgumentException::class.java) {
+        runBlocking {
+          shLinkDecoderImpl.decodeSHLinkToDocument(
+            "",
+            "",
+            "",
+          )
+        }
+      }
+    assertThat(exception.message).isEqualTo("Not a valid SHLink")
+  }
+
+  @Test
+  fun `test decodeSHLinkToDocument with an unsuccessful POST to the manifest URL`() {
+>>>>>>> upstream/master
     val mockResponse =
       MockResponse().setResponseCode(500).setBody(manifestFileResponseWithLocation.toString())
     mockWebServer.enqueue(mockResponse)
@@ -216,6 +305,7 @@ class SHLinkDecoderImplTest {
     `when`(readSHLinkUtils.extractUrl("fullLink")).thenReturn("extractedJson")
     `when`(readSHLinkUtils.decodeUrl("extractedJson")).thenReturn("{}".toByteArray())
 
+<<<<<<< HEAD
     val result = runCatching {
       shLinkDecoderImpl.decodeSHLinkToDocument(
         exampleSHL,
@@ -227,6 +317,19 @@ class SHLinkDecoderImplTest {
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()!!::class).isEqualTo(Error::class)
     assertThat(result.exceptionOrNull()!!.message).contains("Error posting to the manifest:")
+=======
+    val exception =
+      assertThrows(Error::class.java) {
+        runBlocking {
+          shLinkDecoderImpl.decodeSHLinkToDocument(
+            exampleSHL,
+            "",
+            "",
+          )
+        }
+      }
+    assertThat(exception.message).contains("Error posting to the manifest:")
+>>>>>>> upstream/master
   }
 
   @Test
@@ -251,7 +354,11 @@ class SHLinkDecoderImplTest {
         "",
         "",
       )
+<<<<<<< HEAD
     assertThat(result).isNotNull()
+=======
+
+>>>>>>> upstream/master
     assertThat(result!!.document).isNotNull()
 
     val recordedRequestGetManifest: RecordedRequest = mockWebServer.takeRequest()

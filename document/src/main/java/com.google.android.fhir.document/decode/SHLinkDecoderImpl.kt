@@ -16,17 +16,23 @@
 
 package com.google.android.fhir.document.decode
 
+<<<<<<< HEAD
 import android.util.Log
+=======
+>>>>>>> upstream/master
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.RetrofitSHLService
 import com.google.android.fhir.document.scan.SHLinkScanData
 import kotlinx.coroutines.coroutineScope
+<<<<<<< HEAD
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+=======
+>>>>>>> upstream/master
 import org.hl7.fhir.r4.model.Bundle
 import org.json.JSONArray
 import org.json.JSONObject
@@ -82,6 +88,7 @@ class SHLinkDecoderImpl(
     requestBody: JSONObject,
     shLinkScanData: SHLinkScanData,
   ): Bundle? = coroutineScope {
+<<<<<<< HEAD
 
     val requestBody = requestBody.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
@@ -92,6 +99,14 @@ class SHLinkDecoderImpl(
           requestBody,
         )
 
+=======
+    try {
+      val response =
+        retrofitSHLService.getFilesFromManifest(
+          shLinkScanData.manifestUrl.substringAfterLast("shl/"),
+          requestBody,
+        )
+>>>>>>> upstream/master
       if (response.isSuccessful) {
         val responseBody = response.body()?.string()
         responseBody?.let {
@@ -118,7 +133,10 @@ class SHLinkDecoderImpl(
     responseBody: String,
     shLinkScanData: SHLinkScanData,
   ): Bundle {
+<<<<<<< HEAD
     Log.d("FILE", responseBody)
+=======
+>>>>>>> upstream/master
     val jsonObject = JSONObject(responseBody)
     val embeddedArray =
       jsonObject.getJSONArray("files").let { jsonArray: JSONArray ->

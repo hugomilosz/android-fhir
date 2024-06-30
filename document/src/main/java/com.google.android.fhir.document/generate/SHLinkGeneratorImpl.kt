@@ -64,7 +64,6 @@ class SHLinkGeneratorImpl(
 
     return if (response.isSuccessful) {
       val responseBody = response.body()?.string()
-
       println("MANIFEST RESPONSE: $responseBody")
       if (!responseBody.isNullOrBlank()) {
         JSONObject(responseBody)

@@ -18,7 +18,10 @@ package com.google.android.fhir.document.scan
 
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.decode.ReadSHLinkUtils
+<<<<<<< HEAD
 import java.io.Serializable
+=======
+>>>>>>> upstream/master
 import java.nio.charset.StandardCharsets
 import org.json.JSONException
 import org.json.JSONObject
@@ -52,13 +55,21 @@ data class SHLinkScanData(
   val expirationTime: String,
   val versionNumber: String,
   val ipsDoc: IPSDocument?,
+<<<<<<< HEAD
 
 ) : Serializable {
 
+=======
+) {
+>>>>>>> upstream/master
   companion object {
     fun create(fullLink: String): SHLinkScanData {
       val extractedJson = ReadSHLinkUtils.extractUrl(fullLink)
       val decodedJson = ReadSHLinkUtils.decodeUrl(extractedJson)
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
       try {
         val jsonObject = JSONObject(String(decodedJson, StandardCharsets.UTF_8))
         return SHLinkScanData(
