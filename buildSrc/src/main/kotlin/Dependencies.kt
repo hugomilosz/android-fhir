@@ -19,7 +19,6 @@ import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.kotlin.dsl.exclude
 
 object Dependencies {
-<<<<<<< HEAD
 
   object Androidx {
     const val activity = "androidx.activity:activity:${Versions.Androidx.activity}"
@@ -38,8 +37,6 @@ object Dependencies {
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.Androidx.workRuntimeKtx}"
   }
 
-=======
->>>>>>> upstream/master
   object Cql {
     const val evaluator = "org.opencds.cqf.fhir:cqf-fhir-cr:${Versions.Cql.clinicalReasoning}"
     const val evaluatorFhirJackson =
@@ -194,7 +191,6 @@ object Dependencies {
   const val xmlUnit = "org.xmlunit:xmlunit-core:${Versions.xmlUnit}"
 
   object Versions {
-<<<<<<< HEAD
     object Androidx {
       const val activity = "1.7.2"
       const val appCompat = "1.6.1"
@@ -211,8 +207,6 @@ object Dependencies {
       const val sqliteKtx = "2.3.1"
       const val workRuntimeKtx = "2.8.1"
     }
-=======
->>>>>>> upstream/master
 
     object Cql {
       const val clinicalReasoning = "3.0.0-PRE9-SNAPSHOT"

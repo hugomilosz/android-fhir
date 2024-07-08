@@ -1,7 +1,7 @@
 plugins {
   id(Plugins.BuildPlugins.application)
   id(Plugins.BuildPlugins.kotlinAndroid)
-  id(Plugins.BuildPlugins.kotlinKapt)
+  // id(Plugins.BuildPlugins.kotlinKapt)
   id(Plugins.BuildPlugins.navSafeArgs)
 }
 
@@ -54,11 +54,11 @@ dependencies {
   implementation(Dependencies.Kotlin.kotlinCoroutinesAndroid)
   implementation(Dependencies.Kotlin.kotlinCoroutinesCore)
   implementation(Dependencies.Kotlin.stdlib)
-  implementation(Dependencies.Lifecycle.liveDataKtx)
-  implementation(Dependencies.Lifecycle.runtime)
-  implementation(Dependencies.Lifecycle.viewModelKtx)
-  implementation(Dependencies.Navigation.navFragmentKtx)
-  implementation(Dependencies.Navigation.navUiKtx)
+  // implementation(Dependencies.Lifecycle.liveDataKtx)
+  // implementation(Dependencies.Lifecycle.runtime)
+  // implementation(Dependencies.Lifecycle.viewModelKtx)
+  // implementation(Dependencies.Navigation.navFragmentKtx)
+  // implementation(Dependencies.Navigation.navUiKtx)
   implementation(Dependencies.material)
   implementation(Dependencies.timber)
   implementation(project(":engine"))

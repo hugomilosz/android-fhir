@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.fhir.NetworkConfiguration
 import com.google.android.fhir.document.RetrofitSHLService
+import com.google.android.fhir.document.ServerAddress
 import com.google.android.fhir.document.generate.EncryptionUtils
 import com.google.android.fhir.document.generate.QRGeneratorImpl
 import com.google.android.fhir.document.generate.QRGeneratorUtils
@@ -36,7 +37,7 @@ class GenerateSHL : AppCompatActivity() {
 
   private val linkGenerator =
     SHLinkGeneratorImpl(
-      RetrofitSHLService.Builder("https://api.vaxx.link/", NetworkConfiguration()).build(),
+      RetrofitSHLService.Builder(ServerAddress.SERVER_ADDRESS, NetworkConfiguration()).build(),
       EncryptionUtils
     )
 

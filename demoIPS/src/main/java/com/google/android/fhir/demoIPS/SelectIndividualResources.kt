@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.fhir.document.generate.SHLinkGenerationData
+import com.google.android.fhir.document.generate.SelectIndividualResourcesViewModel
 import java.io.Serializable
 
 class SelectIndividualResources : AppCompatActivity() {

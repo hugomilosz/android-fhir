@@ -48,7 +48,8 @@ dependencies {
   implementation(Dependencies.timber)
   implementation("com.google.android.gms:play-services-vision-common:19.1.3")
   implementation("com.google.android.gms:play-services-vision:20.1.3")
-  implementation(Dependencies.Lifecycle.viewModelKtx)
+  // implementation(Dependencies.Lifecycle.viewModelKtx)
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
   coreLibraryDesugaring(Dependencies.desugarJdkLibs)
 

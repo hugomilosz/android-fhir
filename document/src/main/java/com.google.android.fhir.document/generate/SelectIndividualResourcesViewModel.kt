@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.android.fhir.demoIPS
+package com.google.android.fhir.document.generate
 
 import android.content.Context
 import android.widget.CheckBox
@@ -23,10 +23,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.Title
-import com.google.android.fhir.document.generate.DocumentGeneratorUtils
-import com.google.android.fhir.document.generate.DocumentUtils
-import com.google.android.fhir.document.generate.SelectResourcesImpl
-import com.google.android.fhir.document.generate.hasCode
 import com.google.android.fhir.search.Search
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.AllergyIntolerance

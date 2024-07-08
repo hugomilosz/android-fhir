@@ -22,6 +22,7 @@ import android.util.Log
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.document.RetrofitSHLService
+import com.google.android.fhir.document.ServerAddress
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -92,7 +93,7 @@ class SHLinkGeneratorImpl(
     val key = encryptionUtility.generateRandomKey()
     val shLinkPayload =
       constructSHLinkPayload(
-        "https://api.vaxx.link/api/shl/$manifestToken",
+        "${ServerAddress.SERVER_ADDRESS}api/shl/$manifestToken",
         shLinkGenerationData.label,
         getKeyFlags(passcode),
         key,

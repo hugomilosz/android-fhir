@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.fhir.NetworkConfiguration
 import com.google.android.fhir.document.RetrofitSHLService
+import com.google.android.fhir.document.ServerAddress
 import com.google.android.fhir.document.decode.ReadSHLinkUtils
 import com.google.android.fhir.document.decode.SHLinkDecoderImpl
 import com.google.android.fhir.document.scan.SHLinkScanData
@@ -44,7 +45,7 @@ class SuccessfulScan : AppCompatActivity() {
 
     val decoder = SHLinkDecoderImpl(
       ReadSHLinkUtils,
-      RetrofitSHLService.Builder("https://api.vaxx.link/", NetworkConfiguration()).build()
+      RetrofitSHLService.Builder(ServerAddress.SERVER_ADDRESS, NetworkConfiguration()).build()
     )
 
     /* only display the passscode field if one is required */
