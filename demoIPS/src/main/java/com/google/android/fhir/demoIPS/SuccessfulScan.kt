@@ -43,10 +43,11 @@ class SuccessfulScan : AppCompatActivity() {
 
     val shlData = intent.getSerializableExtra("shlData", SHLinkScanData::class.java)
 
-    val decoder = SHLinkDecoderImpl(
-      ReadSHLinkUtils,
-      RetrofitSHLService.Builder(ServerAddress.SERVER_ADDRESS, NetworkConfiguration()).build()
-    )
+    val decoder =
+      SHLinkDecoderImpl(
+        ReadSHLinkUtils,
+        RetrofitSHLService.Builder(ServerAddress.SERVER_ADDRESS, NetworkConfiguration()).build(),
+      )
 
     /* only display the passscode field if one is required */
     val passcodeEditText = findViewById<EditText>(R.id.passcode)
@@ -58,12 +59,18 @@ class SuccessfulScan : AppCompatActivity() {
       val recipientField = findViewById<EditText>(R.id.recipient).text.toString()
       val passcodeField = passcodeEditText.text.toString()
       lifecycleScope.launch {
-        val doc = shlData?.fullLink?.let { it1 -> decoder.decodeSHLinkToDocument(it1, recipientField, passcodeField) }
+        val doc =
+          shlData?.fullLink?.let { it1 ->
+            decoder.decodeSHLinkToDocument(it1, recipientField, passcodeField)
+          }
         if (doc == null) {
           runOnUiThread {
             Toast.makeText(
-              this@SuccessfulScan, "Incorrect passcode", Toast.LENGTH_SHORT
-            ).show()
+                this@SuccessfulScan,
+                "Incorrect passcode",
+                Toast.LENGTH_SHORT,
+              )
+              .show()
           }
           return@launch
         }

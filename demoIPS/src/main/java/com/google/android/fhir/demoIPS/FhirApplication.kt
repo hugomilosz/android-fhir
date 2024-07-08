@@ -46,13 +46,13 @@ class FhirApplication : Application() {
         ServerConfiguration(
           baseUrl = "http://hapi.fhir.org/baseR4/",
           httpLogger =
-          HttpLogger(
-            HttpLogger.Configuration(
-              if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
-            ),
-          ) {
-            Log.d("App-HttpLog", it)
-          },
+            HttpLogger(
+              HttpLogger.Configuration(
+                if (BuildConfig.DEBUG) HttpLogger.Level.BODY else HttpLogger.Level.BASIC,
+              ),
+            ) {
+              Log.d("App-HttpLog", it)
+            },
         ),
       ),
     )

@@ -44,7 +44,7 @@ class ScannerActivity : AppCompatActivity() {
         i.putExtra("shlData", shlData as Serializable)
         startActivity(i)
       },
-      failCallback = {}
+      failCallback = {},
     )
   }
 

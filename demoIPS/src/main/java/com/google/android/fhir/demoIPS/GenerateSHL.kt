@@ -38,7 +38,7 @@ class GenerateSHL : AppCompatActivity() {
   private val linkGenerator =
     SHLinkGeneratorImpl(
       RetrofitSHLService.Builder(ServerAddress.SERVER_ADDRESS, NetworkConfiguration()).build(),
-      EncryptionUtils
+      EncryptionUtils,
     )
 
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)

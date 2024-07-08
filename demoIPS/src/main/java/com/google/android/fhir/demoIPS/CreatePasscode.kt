@@ -55,7 +55,7 @@ class CreatePasscode : Activity() {
     When the submit button is pressed, the state of the checkbox is checked, and the passcode
     and expiration date are added to the intent to be passed into the next activity.
     They are empty strings if they haven't been inputted
-    */
+     */
     submitResourcesButton.setOnClickListener {
       val i = Intent()
       i.component = ComponentName(this@CreatePasscode, GenerateSHL::class.java)
