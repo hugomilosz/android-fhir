@@ -51,6 +51,10 @@ dependencies {
   // implementation(Dependencies.Lifecycle.viewModelKtx)
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
+  implementation("ca.uhn.hapi.fhir:hapi-fhir-jpaserver-ips:6.8.0")
+  implementation("ca.uhn.hapi.fhir:org.hl7.fhir.utilities:6.8.0")
+
+
   coreLibraryDesugaring(Dependencies.desugarJdkLibs)
 
   testImplementation(Dependencies.junit)

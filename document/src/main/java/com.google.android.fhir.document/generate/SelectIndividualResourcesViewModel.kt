@@ -20,6 +20,8 @@ import android.content.Context
 import android.widget.CheckBox
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.uhn.fhir.context.FhirContext
+import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.Title
@@ -69,6 +71,9 @@ class SelectIndividualResourcesViewModel : ViewModel() {
 
       val ipsDocument =
         SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateIPS(resources)
+      val libDoc =
+        SelectResourcesImpl(DocumentGeneratorUtils, DocumentUtils).generateFromPatient(FhirContext.forCached(
+          FhirVersionEnum.R4))
       selectedTitles =
         documentGenerator.displayOptions(context, ipsDocument, checkBoxes, checkboxTitleMap)
       patient =

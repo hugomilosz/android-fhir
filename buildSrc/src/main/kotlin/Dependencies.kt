@@ -57,6 +57,7 @@ object Dependencies {
     const val validationDstu3Module = "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-dstu3"
     const val validationR4Module = "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4"
     const val validationR5Module = "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r5"
+    const val jpaModule = "ca.uhn.hapi.fhir:hapi-fhir-jpaserver-ips"
 
     const val fhirCoreDstu2Module = "ca.uhn.hapi.fhir:org.hl7.fhir.dstu2"
     const val fhirCoreDstu2016Module = "ca.uhn.hapi.fhir:org.hl7.fhir.dstu2016may"

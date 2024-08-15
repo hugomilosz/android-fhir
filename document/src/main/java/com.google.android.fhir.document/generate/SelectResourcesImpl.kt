@@ -20,6 +20,11 @@ import android.content.Context
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import ca.uhn.fhir.context.FhirContext
+import ca.uhn.fhir.jpa.ips.generator.IpsGeneratorSvcImpl
+import ca.uhn.fhir.jpa.ips.jpa.DefaultJpaIpsGenerationStrategy
+import ca.uhn.fhir.rest.api.server.SystemRequestDetails
+import ca.uhn.fhir.rest.param.TokenParam
 import com.google.android.fhir.document.IPSDocument
 import com.google.android.fhir.document.R
 import com.google.android.fhir.document.Title
@@ -123,5 +128,12 @@ class SelectResourcesImpl(
       }
     }
     return organizationReferences
+  }
+
+  fun generateFromPatient(fhirContext: FhirContext) {
+    val doc = IpsGeneratorSvcImpl(fhirContext, DefaultJpaIpsGenerationStrategy()).generateIps(
+      SystemRequestDetails(), TokenParam("http://foo", "bar"), null
+    )
+    println(doc)
   }
 }
